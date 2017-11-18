@@ -4,9 +4,14 @@
 
 This folder contains the following:
 
-* MNIST
+* mlp_mnist
 
-This file trains mnist data set.
+This file trains mnist data set by setting the network to MLP.
+
+* con_mnist
+
+This file trains mnist data set by setting the network to CNN.
+
 
 
 
