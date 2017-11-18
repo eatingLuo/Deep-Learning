@@ -8,7 +8,7 @@ This folder contains the following:
 
 This file trains mnist data set by setting the network to MLP.
 
-* con_mnist
+* conv_mnist
 
 This file trains mnist data set by setting the network to CNN.
 
