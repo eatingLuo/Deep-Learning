@@ -6,7 +6,7 @@ b = tf.Variable([-.3], tf.float32)
 x = tf.placeholder(tf.float32)
 linear_model = W * x + b
 
-init = tf.initialize_all_variables()
+init = tf.global_variables_initializer()
 
 sess = tf.Session()
 sess.run(init)
@@ -29,4 +29,12 @@ sess.run(init) # reset values to incorrect defaults.
 for i in range(1000):
   sess.run(train, {x:[1,2,3,4], y:[0,-1,-2,-3]})
 
+#tensorboard --logdir=/home/ajafari/Deep-Learning/Tenflow_/Examples/my_graph_1 --port 8008
+
+#http://localhost:8008/
+writer = tf.summary.FileWriter('./my_graph_1',sess.graph)
+writer.close()
+sess.close()
+
 print(sess.run([W, b]))
+

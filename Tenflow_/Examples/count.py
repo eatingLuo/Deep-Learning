@@ -81,7 +81,8 @@ print sess.run(prediction,{data: [[[1],[0],[0],[1],[1],[0],[1],[1],[1],[0],[1],[
 
 print sess.run(prediction,{data: [[[1],[0],[0],[0],[1],[0],[1],[0],[1],[0],[1],[0],[0],[0],[1]]]})
 
-#tensorboard --logdir=/home/ajafari/Desktop/TensorFlow_Files/Tensorflow_example/my_graph --port 8008
+#tensorboard --logdir=/home/ajafari/Deep-Learning/Tenflow_/Examples/my_graph --port 8008
+
 #http://localhost:8008/
 writer = tf.summary.FileWriter('./my_graph',sess.graph)
 writer.close()
