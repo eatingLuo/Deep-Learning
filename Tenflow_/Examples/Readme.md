@@ -9,8 +9,7 @@
 
 * Tensorflow GPU
 
-* Test_Tensorflow
-
+* Linear Regression Ex
 
 
 
