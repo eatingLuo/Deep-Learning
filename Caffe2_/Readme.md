@@ -12,5 +12,9 @@ Operators
 
 Mnist Dataset
 
+* Regression
+
+One layer
+
 
 
