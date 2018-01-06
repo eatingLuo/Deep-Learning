@@ -1,14 +1,12 @@
-# We'll also import a few standard python libraries
-from matplotlib import pyplot
+# ------------------------------------------------------------------------------------
+
+import matplotlib.pyplot as plt
 import numpy as np
 import time
-
-# These are the droids you are looking for.
 from caffe2.python import core, workspace
+from caffe2.python import net_drawer
 from caffe2.proto import caffe2_pb2
-
-# Let's show all plots inline.
-# matplotlib inline
+# ------------------------------------------------------------------------------------
 
 print("Current blobs in the workspace: {}".format(workspace.Blobs()))
 print("Workspace has blob 'X'? {}".format(workspace.HasBlob("X")))
@@ -21,7 +19,6 @@ workspace.FeedBlob("X", X)
 print("Current blobs in the workspace: {}".format(workspace.Blobs()))
 print("Workspace has blob 'X'? {}".format(workspace.HasBlob("X")))
 print("Fetched X:\n{}".format(workspace.FetchBlob("X")))
-
 
 
 np.testing.assert_array_equal(X, workspace.FetchBlob("X"))
@@ -50,6 +47,7 @@ print("Current workspace: {}".format(workspace.CurrentWorkspace()))
 print("Current blobs in the workspace: {}".format(workspace.Blobs()))
 
 workspace.ResetWorkspace()
+# ------------------------------------------------------------------------------------
 
 # Create an operator.
 op = core.CreateOperator(
@@ -87,8 +85,10 @@ print(str(op))
 
 workspace.RunOperatorOnce(op)
 temp = workspace.FetchBlob("Z")
-pyplot.hist(temp.flatten(), bins=50)
-pyplot.title("Distribution of Z")
+
+plt.figure(1)
+plt.hist(temp.flatten(), bins=50)
+plt.title("Distribution of Z")
 
 
 net = core.Net("my_first_net")
@@ -107,14 +107,11 @@ print("The blob name is: {}".format(str(X)))
 W = net.GaussianFill([], ["W"], mean=0.0, std=1.0, shape=[5, 3], run_once=0)
 b = net.ConstantFill([], ["b"], shape=[5,], value=1.0, run_once=0)
 
-
 print("Current network proto:\n\n{}".format(net.Proto()))
 
-
-from caffe2.python import net_drawer
-from IPython import display
 graph = net_drawer.GetPydotGraph(net, rankdir="LR")
-display.Image(graph.create_png(), width=800)
+graph.write_svg('First.svg')
+# ------------------------------------------------------------------------------------
 
 
 
@@ -148,3 +145,6 @@ for i in range(1000):
     workspace.RunNet(net.Proto().name)
 end = time.time()
 print('Run time per RunNet: {}'.format((end - start) / 1000))
+
+
+plt.show()

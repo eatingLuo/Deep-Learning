@@ -1,11 +1,11 @@
-from matplotlib import pyplot
+# ------------------------------------------------------------------------------------
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 import shutil
 import caffe2.python.predictor.predictor_exporter as pe
-
-
 from caffe2.python import core, model_helper, net_drawer, workspace, visualize, brew
+# ------------------------------------------------------------------------------------
 
 # If you would like to see some really detailed initializations,
 # you can change --caffe2_log_level=0 to --caffe2_log_level=-1
@@ -23,8 +23,8 @@ def DownloadResource(url, path):
     z.extractall(path)
     print("Completed download and extraction.")
 
-
-current_folder = os.path.join(os.path.expanduser('~'), 'caffe2_notebooks')
+current_folder = os.path.join(os.getcwd(), 'caffe2_files')
+#current_folder = os.path.join(os.path.expanduser('~'), 'caffe2_notebooks')
 data_folder = os.path.join(current_folder, 'tutorial_data', 'mnist')
 root_folder = os.path.join(current_folder, 'tutorial_files', 'tutorial_mnist')
 db_missing = False
@@ -195,15 +195,14 @@ AddLeNetModel(deploy_model, "data")
 # initialize the parameters, but load the parameters from the db.
 
 
-from IPython import display
+
 graph = net_drawer.GetPydotGraph(train_model.net.Proto().op, "mnist", rankdir="LR")
-display.Image(graph.create_png(), width=800)
+graph.write_svg('Second.svg')
 
 
 
-graph = net_drawer.GetPydotGraphMinimal(
-    train_model.net.Proto().op, "mnist", rankdir="LR", minimal_dependency=True)
-display.Image(graph.create_png(), width=800)
+graph = net_drawer.GetPydotGraphMinimal(train_model.net.Proto().op, "mnist", rankdir="LR", minimal_dependency=True)
+graph.write_svg('Third.svg')
 
 
 print(str(train_model.param_init_net.Proto())[:400] + '\n...')
@@ -237,24 +236,25 @@ for i in range(total_iters):
     accuracy[i] = workspace.FetchBlob('accuracy')
     loss[i] = workspace.FetchBlob('loss')
 # After the execution is done, let's plot the values.
-pyplot.plot(loss, 'b')
-pyplot.plot(accuracy, 'r')
-pyplot.legend(('Loss', 'Accuracy'), loc='upper right')
-pyplot.show()
+plt.figure(1)
+plt.plot(loss, 'b')
+plt.plot(accuracy, 'r')
+plt.legend(('Loss', 'Accuracy'), loc='upper right')
+
 
 
 # Let's look at some of the data.
-pyplot.figure()
+plt.figure(2)
 data = workspace.FetchBlob('data')
 _ = visualize.NCHW.ShowMultiple(data)
-pyplot.figure()
+plt.figure(3)
 softmax = workspace.FetchBlob('softmax')
-_ = pyplot.plot(softmax[0], 'ro')
-pyplot.title('Prediction for the first image')
-pyplot.show()
+_ = plt.plot(softmax[0], 'ro')
+plt.title('Prediction for the first image')
 
 
-pyplot.figure()
+
+plt.figure(4)
 conv = workspace.FetchBlob('conv1')
 shape = list(conv.shape)
 shape[1] = 1
@@ -262,7 +262,7 @@ shape[1] = 1
 conv = conv[:,15,:,:].reshape(shape)
 
 _ = visualize.NCHW.ShowMultiple(conv)
-pyplot.show()
+
 
 
 # construct the model to be exported
@@ -281,7 +281,7 @@ print("The deploy model is saved to: " + root_folder + "/mnist_model.minidb")
 
 # we retrieve the last input data out and use it in our prediction test before we scratch the workspace
 blob = workspace.FetchBlob("data")
-pyplot.figure()
+plt.figure(5)
 _ = visualize.NCHW.ShowMultiple(blob)
 
 # reset the workspace, to make sure the model is actually loaded
@@ -304,7 +304,7 @@ workspace.RunNetOnce(predict_net)
 softmax = workspace.FetchBlob("softmax")
 
 # the first letter should be predicted correctly
-pyplot.figure()
-_ = pyplot.plot(softmax[0], 'ro')
-pyplot.title('Prediction for the first image')
-pyplot.show()
+plt.figure(6)
+_ = plt.plot(softmax[0], 'ro')
+plt.title('Prediction for the first image')
+plt.show()
