@@ -3,16 +3,16 @@ import torch
 from torch.autograd import Variable
 #----------------------------------------------------------------------------
 Batch_size = 64     # Batch size
-Q = 1000            # Input size
+R = 1000            # Input size
 S = 100             # Number of neurons
 a_size = 10              # Network output size
 #----------------------------------------------------------------------------
-p = Variable(torch.randn(Batch_size, Q))
+p = Variable(torch.randn(Batch_size, R))
 t = Variable(torch.randn(Batch_size, a_size), requires_grad=False)
 
 
 model = torch.nn.Sequential(
-    torch.nn.Linear(Q, S),
+    torch.nn.Linear(R, S),
     torch.nn.ReLU(),
     torch.nn.Linear(S, a_size),
 )
