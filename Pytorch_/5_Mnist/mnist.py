@@ -7,6 +7,7 @@
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # %%%%%%%%%%%%% Pytorch Examples %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ==========================================================#
+# --------------------------------------------------------------------------------------------
 import torch
 import torchvision
 from torch.autograd import Variable
@@ -14,24 +15,18 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import torchvision.transforms as transforms
-
+# --------------------------------------------------------------------------------------------
 # download data from MNIST and create mini-batch data loader
 torch.manual_seed(1122)
 
-trainset = torchvision.datasets.MNIST(root='./mnist', train=True,
-                                      download=True,
-                                      transform=transforms.ToTensor())
+trainset = torchvision.datasets.MNIST(root='./mnist', train=True, download=True, transform=transforms.ToTensor())
 
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=250,
-                                          shuffle=True)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=250, shuffle=True)
+# --------------------------------------------------------------------------------------------
+testset = torchvision.datasets.MNIST(root='./mnist', train=False, download=True, transform=transforms.ToTensor())
 
-testset = torchvision.datasets.MNIST(root='./mnist', train=False,
-                                     download=True,
-                                     transform=transforms.ToTensor())
-
-testloader = torch.utils.data.DataLoader(testset, batch_size=250,
-                                         shuffle=True)
-
+testloader = torch.utils.data.DataLoader(testset, batch_size=250, shuffle=True)
+# --------------------------------------------------------------------------------------------
 
 # define and initialize a multilayer-perceptron, a criterion, and an optimizer
 class MLP(nn.Module):
@@ -47,11 +42,11 @@ class MLP(nn.Module):
         x = self.t1(self.l1(x))
         x = self.t2(self.l2(x))
         return x
-
+# --------------------------------------------------------------------------------------------
 mlp = MLP()
 criterion = nn.NLLLoss()
 optimizer = optim.SGD(mlp.parameters(), lr=0.1, momentum=0.9)
-
+# --------------------------------------------------------------------------------------------
 
 # define a training epoch function
 def trainEpoch(dataloader, epoch):
@@ -71,7 +66,7 @@ def trainEpoch(dataloader, epoch):
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 50))
             running_loss = 0.0
-
+# --------------------------------------------------------------------------------------------
 
 # define a testing function
 def testModel(dataloader):
@@ -89,7 +84,7 @@ def testModel(dataloader):
           test_loss, correct, len(testloader.dataset),
           100. * correct / len(testloader.dataset)))
 
-
+# --------------------------------------------------------------------------------------------
 # run the training epoch 30 times and test the result
 for epoch in range(30):
     trainEpoch(trainloader, epoch)
