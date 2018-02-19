@@ -1,15 +1,15 @@
 import numpy as np
 #----------------------------------------------------------------------------
 Batch_size = 64     # Batch size
-Q = 1000            # Input size
+R = 1000            # Input size
 S = 100             # Number of neurons
 a = 10              # Network output size
 #----------------------------------------------------------------------------
-p = np.random.randn(Batch_size, Q)
+p = np.random.randn(Batch_size, R)
 t = np.random.randn(Batch_size, a)
 #----------------------------------------------------------------------------
 # Randomly initialize weights
-w1 = np.random.randn(Q, S)
+w1 = np.random.randn(R, S)
 w2 = np.random.randn(S, a)
 
 learning_rate = 1e-6
